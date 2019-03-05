@@ -1,0 +1,17 @@
+# DADA2 pipeline for rbcL diatoms
+
+## Description
+
+This is a custom script to process Illumina MiSeq HTS data directly modified from the workflows published
+on the official DADA2 website (https://benjjneb.github.io/dada2/index.html). The script includes some modifications to fulfill
+specific needs and has proven to work well for diatom metabarcoding with rbcL. Taxonomic assignment step is done using Diat.barcode (Rimet et al. 2018),
+an expertly curated barcode library for diatoms.
+
+
+## References
+
+> Callahan, B. J., McMurdie, P. J., Rosen, M. J., Han, A. W., Johnson, A. J. A., & Holmes, S. P. (2016). DADA2: high-resolution sample inference from Illumina amplicon data. Nature methods, 13(7), 581.
+    
+> Rimet, Frederic; Gusev, Evgenuy; Kahlert, Maria; Kelly, Martyn; Kulikovskiy, Maxim; Maltsev, Yevhen; Mann, David; Pfannkuchen, Martin; Trobajo, Rosa; Vasselon, Valentin; Zimmermann, Jonas; Bouchez, Agnès, 2018, "Diat.barcode, an open-access barcode library for diatoms", https://doi.org/10.15454/TOMBYZ, Portail Data Inra, V4
+    
+> Keck, François; Rimet, Frédéric; Vasselon, Valentin; Bouchez, Agnès, 2019, "A ready-to-use database for DADA2: Diat.barcode_rbcL_312bp_DADA2", https://doi.org/10.15454/HNI1EK, Portail Data Inra, V1 
