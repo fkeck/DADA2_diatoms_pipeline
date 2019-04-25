@@ -23,7 +23,7 @@ filterAndTrim(fas_Fs_raw, fas_Fs_noN,
               fas_Rs_raw, fas_Rs_noN,
               maxN = 0, multithread = TRUE)
 
-# This is our set of primers
+# This is our set of primers (from Vasselon et al. 2017 )
 FWD <- c("AGGTGAAGTAAAAGGTTCWTACTTAAA",
          "AGGTGAAGTTAAAGGTTCWTAYTTAAA",
          "AGGTGAAACTAAAGGTTCWTACTTAAA")
@@ -150,8 +150,9 @@ head(track)
 write.csv(track, file.path(path_results, "track_reads.csv"))
 
 
-#### ASSIGN TAXONOMY
-# Here we downlaod and use the Diat.barcode v7. You can use a local database if needed.
+#### ASSIGN TAXONOMY ####
+# Here we download and use the Diat.barcode v7 pre-processed for DADA2.
+# You can use your own local database if needed.
 httr::GET("https://data.inra.fr/api/access/datafile/83898?gbrecs=true",
           httr::write_disk(tax_fas <- tempfile(fileext = ".gz")))
 tax <- assignTaxonomy(seqtab_nochim, tax_fas, minBoot = 75,
