@@ -16,13 +16,6 @@ if(!dir.exists(path_results)) dir.create(path_results)
 fas_Fs_raw <- sort(list.files(path, pattern = "_R1.fastq", full.names = TRUE))
 fas_Rs_raw <- sort(list.files(path, pattern = "_R2.fastq", full.names = TRUE))
 
-fas_Fs_noN <- file.path(path, "filtN", basename(fas_Fs_raw))
-fas_Rs_noN <- file.path(path, "filtN", basename(fas_Rs_raw))
-
-filterAndTrim(fas_Fs_raw, fas_Fs_noN,
-              fas_Rs_raw, fas_Rs_noN,
-              maxN = 0, multithread = TRUE)
-
 # This is our set of primers (from Vasselon et al. 2017 )
 FWD <- c("AGGTGAAGTAAAAGGTTCWTACTTAAA",
          "AGGTGAAGTTAAAGGTTCWTAYTTAAA",
@@ -44,13 +37,13 @@ for(i in seq_along(fas_Fs_raw)) {
   cat("Processing", which(fas_Fs_raw == i), "/", length(fas_Fs_raw), "-------", i, "\n")
   system2(cutadapt, args = c(R1_flags, R2_flags,
                              "--discard-untrimmed",
-                             paste0("-m ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]), # Strong constraint: expected length
-                             paste0("-M ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]), 
+                             "--max-n 0",
+                             #paste0("-m ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]), # Strong constraint: expected length
+                             #paste0("-M ", 250-nchar(FWD)[1], ":", 250-nchar(REV)[1]), 
                              "-o", fas_Fs_cut[i], "-p", fas_Rs_cut[i],
-                             fas_Fs_noN[i], fas_Rs_noN[i]))
+                             fas_Fs_raw[i], fas_Rs_raw[i]))
 }
 out_1 <- cbind(ShortRead::qa(fas_Fs_raw)[["readCounts"]][,"read", drop = FALSE],
-               ShortRead::qa(fas_Fs_noN)[["readCounts"]][,"read", drop = FALSE],
                ShortRead::qa(fas_Fs_cut)[["readCounts"]][,"read", drop = FALSE])
 
 head(out_1)
