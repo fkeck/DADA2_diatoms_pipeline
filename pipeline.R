@@ -57,7 +57,7 @@ path_process <- path_cut # If you skipped primers removal, provide the path to y
 fas_Fs_process <- sort(list.files(path_process, pattern = "_R1.fastq", full.names = TRUE))
 fas_Rs_process <- sort(list.files(path_process, pattern = "_R2.fastq", full.names = TRUE))
 
-sample.names <- sapply(strsplit(basename(fas_Fs_process), "_"), function(x) x[1])
+sample_names <- sapply(strsplit(basename(fas_Fs_process), "_"), function(x) x[1])
 
 
 #### Inspect read quality profiles ####
@@ -81,8 +81,8 @@ fas_Fs_filtered <- file.path(path, "filtered", basename(fas_Fs_process))
 fas_Rs_filtered <- file.path(path, "filtered", basename(fas_Rs_process))
 all.equal(basename(fas_Fs_raw), basename(fas_Fs_filtered))
 
-names(fas_Fs_filtered) <- sample.names
-names(fas_Rs_filtered) <- sample.names
+names(fas_Fs_filtered) <- sample_names
+names(fas_Rs_filtered) <- sample_names
 
 # Think twice before copying next command
 # Check DADA2 official tutorial and the help of filterAndTrim function for details about arguments
@@ -105,11 +105,11 @@ dev.off()
 
 
 #### DEREPLICATION, SAMPLE INFERENCE & MERGE PAIRED READS ####
-merged_list <- vector("list", length(sample.names))
-names(merged_list) <- sample.names
+merged_list <- vector("list", length(sample_names))
+names(merged_list) <- sample_names
 
-for(i in sample.names){
-  cat("Processing", which(sample.names == i), "/", length(sample.names), "-------", i, "\n")
+for(i in sample_names){
+  cat("Processing", which(sample_names == i), "/", length(sample_names), "-------", i, "\n")
   derep_Fs <- derepFastq(fas_Fs_filtered[[i]], verbose = TRUE)
   derep_Rs <- derepFastq(fas_Rs_filtered[[i]], verbose = TRUE)
   dds_Fs <- dada(derep_Fs, err = error_F, multithread = TRUE, verbose = TRUE)
@@ -131,14 +131,15 @@ write.csv(seqtab, file.path(path_results, "sequence_table.csv"))
 #### REMOVE CHIMERA ####
 seqtab_nochim <- removeBimeraDenovo(seqtab, method = "consensus", multithread = TRUE, verbose = TRUE)
 dim(seqtab_nochim)
+table(nchar(getSequences(seqtab_nochim)))
 write.csv(seqtab_nochim, file.path(path_results, "sequence_table_nochim.csv"))
 
 
 #### TRACK READS THROUGH THE PIPELINE ####
 getN <- function(x) sum(getUniques(x))
 track <- cbind(out_1, out_2, sapply(merged_list, getN), rowSums(seqtab_nochim))
-colnames(track) <- c("raw", "noN", "cutadapt", "input", "filtered", "merged", "nonchim")
-rownames(track) <- sample.names
+colnames(track) <- c("raw", "cutadapt", "input", "filtered", "merged", "nonchim")
+rownames(track) <- sample_names
 head(track)
 write.csv(track, file.path(path_results, "track_reads.csv"))
 
