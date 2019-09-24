@@ -147,17 +147,17 @@ write.csv(track, file.path(path_results, "track_reads.csv"))
 #### ASSIGN TAXONOMY ####
 # Here we download and use the Diat.barcode v7 pre-processed for DADA2.
 # You can use your own local database if needed.
-httr::GET("https://data.inra.fr/api/access/datafile/83898?gbrecs=true",
-          httr::write_disk(tax_fas <- tempfile(fileext = ".gz")))
-tax <- assignTaxonomy(seqtab_nochim, tax_fas, minBoot = 75,
+tax_fas <- diatbarcode::download_diatbarcode(flavor = "rbcl312_dada2_tax")
+
+tax <- assignTaxonomy(seqtab_nochim, tax_fas$path, minBoot = 75,
                       taxLevels = c("Empire", "Kingdom", "Subkingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
                       outputBootstraps = TRUE, verbose = TRUE, multithread = TRUE)
 write.csv(tax, file.path(path_results, "seq_nochim_tax.csv"))
 
 
-httr::GET("https://data.inra.fr/api/access/datafile/83899?gbrecs=true",
-          httr::write_disk(esp_fas <- tempfile(fileext = ".gz")))
-exact_sp <- assignSpecies(seqtab_nochim, esp_fas)
+spe_fas <- diatbarcode::download_diatbarcode(flavor = "rbcl312_dada2_spe")
+
+exact_sp <- assignSpecies(seqtab_nochim, spe_fas$path)
 write.csv(exact_sp, file.path(path_results, "seq_nochim_exact_sp.csv"))
 
 
