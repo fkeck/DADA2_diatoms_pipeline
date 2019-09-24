@@ -6,7 +6,7 @@ This is a custom script to process Illumina MiSeq HTS data directly modified fro
 on the official DADA2 website (https://benjjneb.github.io/dada2/index.html). The script includes some modifications to fulfill
 specific needs and has proven to work well for diatom metabarcoding with rbcL. Taxonomic assignment step is done using Diat.barcode (Rimet et al. 2018), an expertly curated barcode library for diatoms.
 
-# Dependencies
+## Dependencies
 
 The pipeline require some packages to be installed.
 
