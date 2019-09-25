@@ -10,18 +10,18 @@ specific needs and has proven to work well for diatom metabarcoding with rbcL. T
 
 The pipeline require some packages to be installed.
 
-- `ShortRead` and `dada2` from Bioconductor:
+`ShortRead` and `dada2` from Bioconductor:
 
     if (!requireNamespace("BiocManager", quietly = TRUE))
       install.packages("BiocManager")
     BiocManager::install("ShortRead")
     BiocManager::install("dada2")
 
-- `ggplot2` from CRAN:
+`ggplot2` from CRAN:
 
     install.packages("ggplot2")
     
-- `diatbarcode` from GitHub:
+`diatbarcode` from GitHub:
 
     if (!requireNamespace("devtools", quietly = TRUE))
       install.packages("devtools")
