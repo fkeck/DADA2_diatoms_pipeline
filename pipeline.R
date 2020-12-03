@@ -142,7 +142,7 @@ rownames(track) <- sample_names
 head(track)
 
 #### ASSIGN TAXONOMY ####
-# Here we download and use the Diat.barcode v7 pre-processed for DADA2.
+# Here we download and use the Diat.barcode (last version) pre-processed for DADA2.
 # You can use your own local database if needed.
 tax_fas <- diatbarcode::download_diatbarcode(flavor = "rbcl312_dada2_tax")
 tax <- assignTaxonomy(seqtab_nochim, tax_fas$path, minBoot = 75,
